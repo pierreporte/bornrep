@@ -170,7 +170,7 @@ class Application(tk.Frame):
 
         image = Image.open(self.fichier_prévisualisation.name)
         self.prévisualisation = ImageTk.PhotoImage(image)
-        self.canvas_affichage.configure(width=image.size[0], height=image.size[1], scrollregion=(0, 0, image.size[0], image.size[1]))
+        self.canvas_affichage.configure(scrollregion=(0, 0, image.size[0], image.size[1]))
         self.canvas_affichage.create_image(0, 0, image=self.prévisualisation, anchor=tk.NW)
 
         self.texte_barre_état["text"] = "Prêt"
@@ -181,6 +181,7 @@ class Application(tk.Frame):
         self.master.grid_columnconfigure(0, weight=1)
         self.master.grid_rowconfigure(0, weight=1)
         self.master.resizable(True, True)
+        self.master.geometry("900x600")
 
         # Création des widgets
         # ====================
@@ -320,7 +321,3 @@ class Application(tk.Frame):
         self.zone_prévisualisation.grid_columnconfigure(1, weight=0)
         self.zone_prévisualisation.grid_rowconfigure(0, weight=1)
         self.zone_prévisualisation.grid_rowconfigure(1, weight=0)
-
-if __name__ == "__main__":
-    app = Application()
-    app.mainloop()
