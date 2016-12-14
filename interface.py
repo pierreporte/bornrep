@@ -224,13 +224,13 @@ class Application(tk.Frame):
         self.x_spinbox_maximum = tk.Spinbox(self.axe_x, from_=0, to=sys.maxsize, textvariable=self.x_max, command=self.màj_interface)
         self.x_label_pas = tk.Label(self.axe_x, text="Pas")
         self.x_spinbox_pas = tk.Spinbox(self.axe_x, from_=1, to=sys.maxsize, textvariable=self.pas_x, command=self.màj_interface)
-        self.x_label_divisions = tk.Label(self.axe_x, text="Divisions")
-        self.x_spinbox_divisions = tk.Spinbox(self.axe_x, from_=1, to=sys.maxsize, textvariable=self.div_x, command=self.màj_interface)
         self.x_radiobutton_longueur_pas = tk.Radiobutton(self.axe_x, text="Longueur du pas (cm)", variable=self.type_longueur_x, value="pas", command=self.màj_interface)
         self.x_spinbox_longueur_pas = tk.Spinbox(self.axe_x, to=sys.maxsize, format="%.1f", increment=0.1, textvariable=self.longueur_pas_x, command=self.màj_interface)
         self.x_radiobutton_longueur_totale = tk.Radiobutton(self.axe_x, text="Longueur totale (cm)", variable=self.type_longueur_x, value="totale", command=self.màj_interface)
         self.x_spinbox_longueur_totale = tk.Spinbox(self.axe_x, to=sys.maxsize, format="%.1f", increment=0.1, textvariable=self.longueur_totale_x, command=self.màj_interface)
         self.x_checkbox_quadrillage = tk.Checkbutton(self.axe_x, text="Quadrillage", variable=self.quadrillage_x, command=self.màj_interface)
+        self.x_label_divisions = tk.Label(self.axe_x, text="Divisions du quadrillage")
+        self.x_spinbox_divisions = tk.Spinbox(self.axe_x, from_=1, to=sys.maxsize, textvariable=self.div_x, command=self.màj_interface)
 
         # Axe des ordonnées
         self.axe_y = tk.LabelFrame(self.zone_contrôle, text="Axe des ordonnées")
@@ -242,13 +242,13 @@ class Application(tk.Frame):
         self.y_spinbox_maximum = tk.Spinbox(self.axe_y, from_=0, to=sys.maxsize, textvariable=self.y_max, command=self.màj_interface)
         self.y_label_pas = tk.Label(self.axe_y, text="Pas")
         self.y_spinbox_pas = tk.Spinbox(self.axe_y, from_=1, to=sys.maxsize, textvariable=self.pas_y, command=self.màj_interface)
-        self.y_label_divisions = tk.Label(self.axe_y, text="Divisions")
-        self.y_spinbox_divisions = tk.Spinbox(self.axe_y, from_=1, to=sys.maxsize, textvariable=self.div_y, command=self.màj_interface)
         self.y_radiobutton_longueur_pas = tk.Radiobutton(self.axe_y, text="Longueur du pas (cm)", variable=self.type_longueur_y, value="pas", command=self.màj_interface)
         self.y_spinbox_longueur_pas = tk.Spinbox(self.axe_y, to=sys.maxsize, format="%.1f", increment=0.1, textvariable=self.longueur_pas_y, command=self.màj_interface)
         self.y_radiobutton_longueur_totale = tk.Radiobutton(self.axe_y, text="Longueur totale (cm)", variable=self.type_longueur_y, value="totale", command=self.màj_interface)
         self.y_spinbox_longueur_totale = tk.Spinbox(self.axe_y, to=sys.maxsize, format="%.1f", increment=0.1, textvariable=self.longueur_totale_y, command=self.màj_interface)
         self.y_checkbox_quadrillage = tk.Checkbutton(self.axe_y, text="Quadrillage", variable=self.quadrillage_y, command=self.màj_interface)
+        self.y_label_divisions = tk.Label(self.axe_y, text="Divisions du quadrillage")
+        self.y_spinbox_divisions = tk.Spinbox(self.axe_y, from_=1, to=sys.maxsize, textvariable=self.div_y, command=self.màj_interface)
 
 
         # Zone de prévisualisation
@@ -293,13 +293,13 @@ class Application(tk.Frame):
         self.x_spinbox_maximum.grid(row=2, column=1, sticky=(tk.W, tk.E))
         self.x_label_pas.grid(row=3, column=0, sticky=tk.W)
         self.x_spinbox_pas.grid(row=3, column=1, sticky=(tk.W, tk.E))
-        self.x_label_divisions.grid(row=4, column=0, sticky=tk.W)
-        self.x_spinbox_divisions.grid(row=4, column=1, sticky=(tk.W, tk.E))
-        self.x_radiobutton_longueur_pas.grid(row=5, column=0, sticky=tk.W)
-        self.x_spinbox_longueur_pas.grid(row=5, column=1)
-        self.x_radiobutton_longueur_totale.grid(row=6, column=0, sticky=tk.W)
-        self.x_spinbox_longueur_totale.grid(row=6, column=1)
-        self.x_checkbox_quadrillage.grid(row=7, column=0, columnspan=2, sticky=tk.W)
+        self.x_radiobutton_longueur_pas.grid(row=4, column=0, sticky=tk.W)
+        self.x_spinbox_longueur_pas.grid(row=4, column=1)
+        self.x_radiobutton_longueur_totale.grid(row=5, column=0, sticky=tk.W)
+        self.x_spinbox_longueur_totale.grid(row=5, column=1)
+        self.x_checkbox_quadrillage.grid(row=6, column=0, columnspan=2, sticky=tk.W)
+        self.x_label_divisions.grid(row=7, column=0, sticky=tk.W)
+        self.x_spinbox_divisions.grid(row=7, column=1, sticky=(tk.W, tk.E))
         
         # Axe des ordonnées
         self.y_label_titre.grid(row=0, column=0, sticky=tk.W)
@@ -310,13 +310,13 @@ class Application(tk.Frame):
         self.y_spinbox_maximum.grid(row=2, column=1, sticky=(tk.W, tk.E))
         self.y_label_pas.grid(row=3, column=0, sticky=tk.W)
         self.y_spinbox_pas.grid(row=3, column=1, sticky=(tk.W, tk.E))
-        self.y_label_divisions.grid(row=4, column=0, sticky=tk.W)
-        self.y_spinbox_divisions.grid(row=4, column=1, sticky=(tk.W, tk.E))
-        self.y_radiobutton_longueur_pas.grid(row=5, column=0, sticky=tk.W)
-        self.y_spinbox_longueur_pas.grid(row=5, column=1)
-        self.y_radiobutton_longueur_totale.grid(row=6, column=0, sticky=tk.W)
-        self.y_spinbox_longueur_totale.grid(row=6, column=1)
-        self.y_checkbox_quadrillage.grid(row=7, column=0, columnspan=2, sticky=tk.W)
+        self.y_radiobutton_longueur_pas.grid(row=4, column=0, sticky=tk.W)
+        self.y_spinbox_longueur_pas.grid(row=4, column=1)
+        self.y_radiobutton_longueur_totale.grid(row=5, column=0, sticky=tk.W)
+        self.y_spinbox_longueur_totale.grid(row=5, column=1)
+        self.y_checkbox_quadrillage.grid(row=6, column=0, columnspan=2, sticky=tk.W)
+        self.y_label_divisions.grid(row=7, column=0, sticky=tk.W)
+        self.y_spinbox_divisions.grid(row=7, column=1, sticky=(tk.W, tk.E))
 
         # Zone de prévisualisation
         # ------------------------
