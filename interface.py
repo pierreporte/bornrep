@@ -21,10 +21,12 @@
 
 import sys
 import tempfile
+import pathlib
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 from tkinter import filedialog
+from tkinter import simpledialog
 from PIL import Image, ImageTk
 
 from graphique import Graphique
@@ -100,9 +102,27 @@ class Application(tk.Frame):
             self.génerer()
     
     def exporter_graphique(self, event=None):
-        fichier = filedialog.asksaveasfilename(title="Exporter le graphique", filetypes=[("Image SVG", "*.svg")], defaultextension=".svg")
-        if fichier:
-            self.graphique.enregistrer_SVG(fichier)
+        formats = [
+            ("Image SVG", "*.svg"),
+            ("Image PNG", "*.png")
+        ]
+        
+        chemin = filedialog.asksaveasfilename(title="Exporter le graphique", filetypes=formats, defaultextension=".svg")
+        
+        # Si on annule l’enregistrement, un tuple vide, (), est retourné.
+        if not chemin:
+            return
+
+        fichier = pathlib.Path(chemin)
+        extension = fichier.suffix.lower()
+        if extension == ".svg":
+            self.graphique.enregistrer_SVG(str(fichier))
+        elif extension == ".png":
+            résolution = simpledialog.askinteger("Résolution", "Entrez la résolution de l’image en dpi :", initialvalue=90, minvalue=1, parent=self)
+            if résolution <= 0:
+                self.graphique.enregistrer_PNG(str(fichier))
+            else:
+                self.graphique.enregistrer_PNG(str(fichier), résolution)
 
     def màj_interface(self, event=None):
         x_min = self.x_min.get()
