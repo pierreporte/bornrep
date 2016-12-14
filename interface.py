@@ -107,7 +107,7 @@ class Application(tk.Frame):
             ("Image PNG", "*.png")
         ]
         
-        chemin = filedialog.asksaveasfilename(title="Exporter le graphique", filetypes=formats, defaultextension=".svg")
+        chemin = filedialog.asksaveasfilename(title="Exporter le graphique", filetypes=formats)
         
         # Si on annule l’enregistrement, un tuple vide, (), est retourné.
         if not chemin:
@@ -119,10 +119,7 @@ class Application(tk.Frame):
             self.graphique.enregistrer_SVG(str(fichier))
         elif extension == ".png":
             résolution = simpledialog.askinteger("Résolution", "Entrez la résolution de l’image en dpi :", initialvalue=90, minvalue=1, parent=self)
-            if résolution <= 0:
-                self.graphique.enregistrer_PNG(str(fichier))
-            else:
-                self.graphique.enregistrer_PNG(str(fichier), résolution)
+            self.graphique.enregistrer_PNG(str(fichier), résolution)
 
     def màj_interface(self, event=None):
         x_min = self.x_min.get()
