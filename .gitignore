@@ -1,0 +1,8 @@
+__pycache__/
+bin/
+build/
+include/
+lib/
+.venv/
+pip-selfcheck.json
+
