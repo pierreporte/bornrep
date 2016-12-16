@@ -10,23 +10,24 @@ La version actuelle est considérée comme un prototype.
 Dépendances
 -----------
 
-* Python 3 (CPython recommandé)
+* Python 3
 * [PyX](https://pypi.python.org/pypi/PyX) pour Python 3
 * [PIL](https://pypi.python.org/pypi/PIL) pour Python 3
+* [cx_freeze](http://cx-freeze.sourceforge.net/) (pour la compilation)
 
-Installation et exécution
--------------------------
+Compilation
+-----------
 
-L’installation se fait simplement en plaçant les fichiers .py dans un répertoire quelconque.
+La compilation est effectuée avec cx_freeze. La commande
 
-Pour lancer le logiciel, exécuter bornographe.py:
+    python3 setup.py build
 
-    chmod +x bornographe.py
-    ./bornographe.py
+doit être exécutée dans le répertoire racine des fichiers sources.
 
-ou
+Installation
+------------
 
-    python3 bornographe.py
+Après avoir compilé le logiciel ou récupéré sa version compilée, lancer simplement l’exécutable *bornographe*.
 
 Utilisation
 -----------
@@ -43,10 +44,10 @@ La configuration de l’axe des abscisses et de l’axe des ordonnées est ident
 * **Minimum :** la borne inférieure de l’axe.
 * **Maximum :** la borne supérieure de l’axe.
 * **Pas :** le nombre d’unités entre chaque graduations.
-* **Divisions :** le nombre de divisions du quadrillage entrre chaque graduation.
 * **Longueur du pas :** longueur en centimètred entre chaque graduation.
 * **Longueur totale :** longueur en centimètres entre la borne inférieure et la borne supérieure.
 * **Quadrillage :** affiche ou non le quadrillage de l’axe.
+* **Divisions du quadrillage :** le nombre de divisions du quadrillage entre chaque graduation.
 
 Le nombre de divisions n’est accessible que si on active le quadrillage.
 
