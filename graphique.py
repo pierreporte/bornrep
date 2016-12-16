@@ -20,12 +20,50 @@
 # 3. This notice may not be removed or altered from any source distribution.
 
 import pyx
+import itertools
 
-def drange(start, stop, step):
+# Les deux fonctions suivantes sont issues du module Goulib, de Philippe
+# Guglielmetti <goulib@goulu.net>. La fonction linspace() a été légèrement
+# modifiée : la gestion des itérables a été retirée.
+# https://github.com/goulu/Goulib/blob/master/Goulib/itertools2.py
+
+def arange(start,stop=None,step=1):
+    """ range for floats or other types (`numpy.arange` without numpy)
+    :param start: optional number. Start of interval. The interval includes this value. The default start value is 0.
+    :param stop: number. End of interval. The interval does not include this value, except in some cases where step is not an integer and floating point round-off affects the length of out.
+    :param step: optional number. Spacing between values. For any output out, this is the distance between two adjacent values, out[i+1] - out[i]. The default step size is 1.
+    :result: iterator
+    """
+    if stop is None:
+        stop=start
+        start=0
     r = start
-    while r < stop:
-        yield r
-        r += step
+    step=abs(step)
+    if stop<start :
+        while r > stop:
+            yield r
+            r -= step
+    else:
+        while r < stop:
+            yield r
+            r += step
+
+def linspace(start,end,n=100):
+    """ iterator over n values linearly interpolated between (and including) start and end
+    `numpy.linspace` without numpy
+    :param start: number, or iterable vector
+    :param end: number, or iterable vector
+    :param n: int number of interpolated values
+    :result: iterator
+    """
+
+    # like http://www.mathworks.com/help/matlab/ref/linspace.html
+    # http://docs.scipy.org/doc/numpy/reference/generated/numpy.linspace.html has more options
+    if start==end: #generate n times the same value for consistency
+        return itertools.repeat(start,n)
+    else: #make sure we generate n values including start and end
+        step=float(end-start)/(n-1)
+        return arange(start,end+step/2,step)
 
 class Graphique():
     def __init__(self, x_min, x_max, y_min, y_max, titre_x="", titre_y="", pas_x=1, pas_y=1, longueur_pas_x=1, longueur_pas_y=1, div_x=1, div_y=1, quadrillage_x=True, quadrillage_y=True):
@@ -66,7 +104,7 @@ class Graphique():
             nombres.append(pyx.text.text(x*self.longueur_pas_x, -0.2, str(x), [pyx.text.halign.boxcenter, pyx.text.valign.top]))
 
         if self.quadrillage_x:
-            for x in drange(self.x_min, self.x_max + 1/self.div_x, self.pas_x/self.div_x):
+            for x in linspace(self.x_min, self.x_max, (self.x_max - self.x_min)*self.div_x/self.pas_x + 1):
                 quadrillage.append(pyx.path.line(x*self.longueur_pas_x, self.y_min*self.longueur_pas_y, x*self.longueur_pas_x, self.y_max*self.longueur_pas_y))
 
         for y in range(self.y_min, self.y_max + 1, self.pas_y):
@@ -74,7 +112,7 @@ class Graphique():
             nombres.append(pyx.text.text(-0.2, y*self.longueur_pas_y, str(y), [pyx.text.halign.boxright, pyx.text.valign.middle]))
 
         if self.quadrillage_y:
-            for y in drange(self.y_min, self.y_max + 1/self.div_y, self.pas_y/self.div_y):
+            for y in linspace(self.y_min, self.y_max, (self.y_max - self.y_min)*self.div_y/self.pas_y + 1):
                 quadrillage.append(pyx.path.line(self.x_min*self.longueur_pas_x, y*self.longueur_pas_y, self.x_max*self.longueur_pas_x, y*self.longueur_pas_y))
 
         for axe in axes:
