@@ -19,8 +19,9 @@
 #    misrepresented as being the original software.
 # 3. This notice may not be removed or altered from any source distribution.
 
-import pyx
 import itertools
+import pyx
+from pyx.unit import tocm
 
 # Les deux fonctions suivantes sont issues du module Goulib, de Philippe
 # Guglielmetti <goulib@goulu.net>. La fonction linspace() a été légèrement
@@ -92,16 +93,27 @@ class Graphique():
         axes = [pyx.path.line(self.x_min*self.longueur_pas_x, 0, self.x_max*self.longueur_pas_x + 0.5, 0),
                 pyx.path.line(0, self.y_min*self.longueur_pas_y, 0, self.y_max*self.longueur_pas_y + 0.5)]
 
-        titre_axe_x = pyx.text.text(self.x_max*self.longueur_pas_x, -0.5, self.titre_x, [pyx.text.halign.right, pyx.text.valign.top])
-        titre_axe_y = pyx.text.text(-1, self.y_max*self.longueur_pas_y, self.titre_y, [pyx.text.halign.right])
 
         graduations = list()
         quadrillage = list()
         nombres = list()
 
+        # Positions extrêmales du haut et du bas des boîtes de textes des
+        # graduations sur l’axe x. Seront utilisées pour positionner le titre
+        # des axes afin d’éviter une superposition.
+        encombrement_nombres_x = {"haut": 0.0, "bas": 0.0}
+        encombrement_nombres_y = {"droite": 0.0, "gauche": 0.0}
+
         for x in range(self.x_min, self.x_max + 1, self.pas_x):
             graduations.append(pyx.path.line(x*self.longueur_pas_x, -0.1, x*self.longueur_pas_x, 0.1))
-            nombres.append(pyx.text.text(x*self.longueur_pas_x, -0.2, "$" + str(x)+ "$", [pyx.text.halign.boxcenter, pyx.text.valign.top]))
+            nombre = pyx.text.text(x*self.longueur_pas_x, -0.2, "$" + str(x)+ "$", [pyx.text.halign.boxcenter, pyx.text.valign.top])
+            nombres.append(nombre)
+            
+            haut, bas = tocm(nombre.bbox().top()), tocm(nombre.bbox().bottom())
+            if haut > encombrement_nombres_x["haut"]:
+                encombrement_nombres_x["haut"] = haut
+            if bas < encombrement_nombres_x["bas"]:
+                encombrement_nombres_x["bas"] = bas
 
         if self.quadrillage_x:
             for x in linspace(self.x_min, self.x_max, (self.x_max - self.x_min)*self.div_x/self.pas_x + 1):
@@ -109,7 +121,18 @@ class Graphique():
 
         for y in range(self.y_min, self.y_max + 1, self.pas_y):
             graduations.append(pyx.path.line(-0.1, y*self.longueur_pas_y, 0.1, y*self.longueur_pas_y))
-            nombres.append(pyx.text.text(-0.2, y*self.longueur_pas_y, "$" + str(y) + "$", [pyx.text.halign.boxright, pyx.text.valign.middle]))
+            nombre = pyx.text.text(-0.2, y*self.longueur_pas_y, "$" + str(y) + "$", [pyx.text.halign.boxright, pyx.text.valign.middle])
+            nombres.append(nombre)
+
+            gauche, droite = tocm(nombre.bbox().left()), tocm(nombre.bbox().right())
+            if gauche < encombrement_nombres_y["gauche"]:
+                encombrement_nombres_y["gauche"] = gauche
+            if droite < encombrement_nombres_y["droite"]:
+                encombrement_nombres_y["droite"] = droite
+
+        print(encombrement_nombres_x, encombrement_nombres_y)
+        titre_axe_x = pyx.text.text(self.x_max*self.longueur_pas_x, encombrement_nombres_x["bas"] - 0.3, self.titre_x, [pyx.text.halign.right, pyx.text.valign.top])
+        titre_axe_y = pyx.text.text(encombrement_nombres_y["gauche"] - 0.3, self.y_max*self.longueur_pas_y, self.titre_y, [pyx.text.halign.right])
 
         if self.quadrillage_y:
             for y in linspace(self.y_min, self.y_max, (self.y_max - self.y_min)*self.div_y/self.pas_y + 1):
@@ -119,16 +142,15 @@ class Graphique():
             self._image.stroke(axe, [pyx.style.linewidth.Thick, pyx.deco.earrow()])
 
         ap_texte = [pyx.color.rgb.white, pyx.style.linewidth.THIck, pyx.deco.filled([pyx.color.rgb.white])]
-        rotation = [pyx.trafo.rotate(90, x=-1, y=self.y_max*self.longueur_pas_y)]
+        rotation = [pyx.trafo.rotate(90, x=encombrement_nombres_y["gauche"] - 0.3, y=self.y_max*self.longueur_pas_y)]
 
         self._image.stroke(titre_axe_x.bbox().path(), [pyx.color.rgb.white, pyx.style.linewidth.THIck, pyx.deco.filled([pyx.color.rgb.white])])
         self._image.insert(titre_axe_x)
         self._image.stroke(titre_axe_y.bbox().path(), [pyx.color.rgb.white, pyx.style.linewidth.THIck, pyx.deco.filled([pyx.color.rgb.white]), pyx.trafo.rotate(90, x=-1, y=self.y_max*self.longueur_pas_y)])
-        self._image.insert(titre_axe_y, [pyx.trafo.rotate(90, x=-1, y=self.y_max*self.longueur_pas_y)])
+        self._image.insert(titre_axe_y, rotation)
 
         for graduation in graduations:
             self._image.stroke(graduation, [pyx.style.linewidth.Thick])
-
 
         for ligne in quadrillage:
             self._image.stroke(ligne, [pyx.style.linestyle.dashed])
