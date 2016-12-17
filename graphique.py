@@ -115,10 +115,6 @@ class Graphique():
             if bas < encombrement_nombres_x["bas"]:
                 encombrement_nombres_x["bas"] = bas
 
-        if self.quadrillage_x:
-            for x in linspace(self.x_min, self.x_max, (self.x_max - self.x_min)*self.div_x/self.pas_x + 1):
-                quadrillage.append(pyx.path.line(x*self.longueur_pas_x/self.pas_x, self.y_min*self.longueur_pas_y/self.pas_y, x*self.longueur_pas_x/self.pas_x, self.y_max*self.longueur_pas_y/self.pas_y))
-
         for y in range(self.y_min, self.y_max + 1, self.pas_y):
             graduations.append(pyx.path.line(-0.1, y*self.longueur_pas_y/self.pas_y, 0.1, y*self.longueur_pas_y/self.pas_y))
             nombre = pyx.text.text(-0.2, y*self.longueur_pas_y/self.pas_y, "$" + str(y) + "$", [pyx.text.halign.boxright, pyx.text.valign.middle])
@@ -132,6 +128,10 @@ class Graphique():
 
         titre_axe_x = pyx.text.text(self.x_max*self.longueur_pas_x/self.pas_x, encombrement_nombres_x["bas"] - 0.3, self.titre_x, [pyx.text.halign.right, pyx.text.valign.top])
         titre_axe_y = pyx.text.text(encombrement_nombres_y["gauche"] - 0.3, self.y_max*self.longueur_pas_y/self.pas_y, self.titre_y, [pyx.text.halign.right])
+
+        if self.quadrillage_x:
+            for x in linspace(self.x_min, self.x_max, (self.x_max - self.x_min)*self.div_x/self.pas_x + 1):
+                quadrillage.append(pyx.path.line(x*self.longueur_pas_x/self.pas_x, self.y_min*self.longueur_pas_y/self.pas_y, x*self.longueur_pas_x/self.pas_x, self.y_max*self.longueur_pas_y/self.pas_y))
 
         if self.quadrillage_y:
             for y in linspace(self.y_min, self.y_max, (self.y_max - self.y_min)*self.div_y/self.pas_y + 1):
