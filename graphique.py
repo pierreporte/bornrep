@@ -93,7 +93,6 @@ class Graphique():
         axes = [pyx.path.line(self.x_min*self.longueur_pas_x/self.pas_x, 0, self.x_max*self.longueur_pas_x/self.pas_x + 0.5, 0),
                 pyx.path.line(0, self.y_min*self.longueur_pas_y/self.pas_y, 0, self.y_max*self.longueur_pas_y/self.pas_y + 0.5)]
 
-
         graduations = list()
         quadrillage = list()
         nombres = list()
@@ -143,11 +142,6 @@ class Graphique():
         ap_texte = [pyx.color.rgb.white, pyx.style.linewidth.THIck, pyx.deco.filled([pyx.color.rgb.white])]
         rotation = [pyx.trafo.rotate(90, x=encombrement_nombres_y["gauche"] - 0.3, y=self.y_max*self.longueur_pas_y/self.pas_y)]
 
-        self._image.stroke(titre_axe_x.bbox().path(), ap_texte)
-        self._image.insert(titre_axe_x)
-        self._image.stroke(titre_axe_y.bbox().path(), ap_texte + rotation)
-        self._image.insert(titre_axe_y, rotation)
-
         for graduation in graduations:
             self._image.stroke(graduation, [pyx.style.linewidth.Thick])
 
@@ -157,6 +151,11 @@ class Graphique():
         for nombre in nombres:
             self._image.stroke(nombre.bbox().path(), [pyx.color.rgb.white, pyx.style.linewidth.THIck, pyx.deco.filled([pyx.color.rgb.white])])
             self._image.insert(nombre)
+
+        self._image.stroke(titre_axe_x.bbox().path(), ap_texte)
+        self._image.insert(titre_axe_x)
+        self._image.stroke(titre_axe_y.bbox().path(), ap_texte + rotation)
+        self._image.insert(titre_axe_y, rotation)
 
         self._généré = True
 
