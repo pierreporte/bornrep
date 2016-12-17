@@ -101,7 +101,7 @@ class Graphique():
 
         for x in range(self.x_min, self.x_max + 1, self.pas_x):
             graduations.append(pyx.path.line(x*self.longueur_pas_x, -0.1, x*self.longueur_pas_x, 0.1))
-            nombres.append(pyx.text.text(x*self.longueur_pas_x, -0.2, str(x), [pyx.text.halign.boxcenter, pyx.text.valign.top]))
+            nombres.append(pyx.text.text(x*self.longueur_pas_x, -0.2, "$" + str(x)+ "$", [pyx.text.halign.boxcenter, pyx.text.valign.top]))
 
         if self.quadrillage_x:
             for x in linspace(self.x_min, self.x_max, (self.x_max - self.x_min)*self.div_x/self.pas_x + 1):
@@ -109,7 +109,7 @@ class Graphique():
 
         for y in range(self.y_min, self.y_max + 1, self.pas_y):
             graduations.append(pyx.path.line(-0.1, y*self.longueur_pas_y, 0.1, y*self.longueur_pas_y))
-            nombres.append(pyx.text.text(-0.2, y*self.longueur_pas_y, str(y), [pyx.text.halign.boxright, pyx.text.valign.middle]))
+            nombres.append(pyx.text.text(-0.2, y*self.longueur_pas_y, "$" + str(y) + "$", [pyx.text.halign.boxright, pyx.text.valign.middle]))
 
         if self.quadrillage_y:
             for y in linspace(self.y_min, self.y_max, (self.y_max - self.y_min)*self.div_y/self.pas_y + 1):
