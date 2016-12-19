@@ -67,15 +67,14 @@ class Application(tk.Frame):
 
         self.master.title("Bornographe")
         self.créer_interface()
-        self.initialisation_variables()
-        self.màj_interface()
+        self.initialisation()
         self.génerer()
 
     def quitter(self, event=None):
         sys.exit(0)
 
-    def initialisation_variables(self, titre_x="Axe des abscisses ($x$)", x_min=0, x_max=10, pas_x=1, div_x=1, type_longueur_x="pas", longueur_pas_x=1.0, longueur_totale_x=10.0, quadrillage_x=True,
-                                       titre_y="Axe des ordonnées ($y$)", y_min=0, y_max=10, pas_y=1, div_y=1, type_longueur_y="pas", longueur_pas_y=1.0, longueur_totale_y=10.0, quadrillage_y=True):
+    def initialisation(self, titre_x="Axe des abscisses ($x$)", x_min=0, x_max=10, pas_x=1, div_x=1, type_longueur_x="pas", longueur_pas_x=1.0, longueur_totale_x=10.0, quadrillage_x=True,
+                             titre_y="Axe des ordonnées ($y$)", y_min=0, y_max=10, pas_y=1, div_y=1, type_longueur_y="pas", longueur_pas_y=1.0, longueur_totale_y=10.0, quadrillage_y=True):
         self.titre_x.set(titre_x)
         self.x_min.set(x_min)
         self.x_max.set(y_max)
@@ -96,9 +95,23 @@ class Application(tk.Frame):
         self.longueur_totale_y.set(longueur_totale_y)
         self.quadrillage_y.set(quadrillage_y)
 
+        if self.type_longueur_x.get() == "pas":
+            self.x_spinbox_longueur_pas.configure(state=tk.NORMAL)
+            self.x_spinbox_longueur_totale.configure(state=tk.DISABLED)
+        else:
+            self.x_spinbox_longueur_pas.configure(state=tk.DISABLED)
+            self.x_spinbox_longueur_totale.configure(state=tk.NORMAL)
+
+        if self.type_longueur_y.get() == "pas":
+            self.y_spinbox_longueur_pas.configure(state=tk.NORMAL)
+            self.y_spinbox_longueur_totale.configure(state=tk.DISABLED)
+        else:
+            self.y_spinbox_longueur_pas.configure(state=tk.DISABLED)
+            self.y_spinbox_longueur_totale.configure(state=tk.NORMAL)
+
     def nouveau_graphique(self, event=None):
         if messagebox.askyesno("Attention", "Si vous créez un nouveau graphique, le travail en cours sera effacé définitivement.\n\nVoulez-vous continuer ?", icon=messagebox.WARNING):
-            self.initialisation_variables()
+            self.initialisation()
             self.génerer()
     
     def exporter_graphique(self, event=None):
@@ -121,7 +134,39 @@ class Application(tk.Frame):
             résolution = simpledialog.askinteger("Résolution", "Entrez la résolution de l’image en dpi :", initialvalue=90, minvalue=1, parent=self)
             self.graphique.enregistrer_PNG(str(fichier), résolution)
 
-    def màj_interface(self, event=None):
+    def màj_longueur_radio(self, event=None):
+        x_min = self.x_min.get()
+        x_max = self.x_max.get()
+        y_min = self.y_min.get()
+        y_max = self.y_max.get()
+        dx = x_max - x_min
+        dy = y_max - y_min
+        pas_x = self.pas_x.get()
+        pas_y = self.pas_y.get()
+        lpx = self.longueur_pas_x.get()
+        ltx = self.longueur_totale_x.get()
+        lpy = self.longueur_pas_y.get()
+        lty = self.longueur_totale_y.get()
+
+        if self.type_longueur_x.get() == "pas":
+            self.x_spinbox_longueur_pas.configure(state=tk.NORMAL)
+            self.x_spinbox_longueur_totale.configure(state=tk.DISABLED)
+            self.longueur_pas_x.set(ltx*pas_x/dx)
+        else:
+            self.x_spinbox_longueur_pas.configure(state=tk.DISABLED)
+            self.x_spinbox_longueur_totale.configure(state=tk.NORMAL)
+            self.longueur_totale_x.set(lpx*dx/pas_x)
+
+        if self.type_longueur_y.get() == "pas":
+            self.y_spinbox_longueur_pas.configure(state=tk.NORMAL)
+            self.y_spinbox_longueur_totale.configure(state=tk.DISABLED)
+            self.longueur_pas_y.set(lty*pas_y/dy)
+        else:
+            self.y_spinbox_longueur_pas.configure(state=tk.DISABLED)
+            self.y_spinbox_longueur_totale.configure(state=tk.NORMAL)
+            self.longueur_totale_y.set(lpy*dy/pas_y)
+
+    def màj_longueur_clavier(self, event=None):
         x_min = self.x_min.get()
         x_max = self.x_max.get()
         y_min = self.y_min.get()
@@ -153,6 +198,7 @@ class Application(tk.Frame):
             self.y_spinbox_longueur_totale.configure(state=tk.NORMAL)
             self.longueur_pas_y.set(lty*pas_y/dy)
 
+    def màj_quadrillage(self, event=None):
         if self.quadrillage_x.get():
             self.x_spinbox_divisions.configure(state=tk.NORMAL)
         else:
@@ -219,37 +265,42 @@ class Application(tk.Frame):
         self.x_label_titre = tk.Label(self.axe_x, text="Titre")
         self.x_entry_titre = tk.Entry(self.axe_x, textvariable=self.titre_x)
         self.x_label_minimum = tk.Label(self.axe_x, text="Minimum")
-        self.x_spinbox_minimum = tk.Spinbox(self.axe_x, from_=-sys.maxsize, to=0, textvariable=self.x_min, command=self.màj_interface)
+        self.x_spinbox_minimum = tk.Spinbox(self.axe_x, from_=-sys.maxsize, to=0, textvariable=self.x_min)
         self.x_label_maximum = tk.Label(self.axe_x, text="Maximum")
-        self.x_spinbox_maximum = tk.Spinbox(self.axe_x, from_=0, to=sys.maxsize, textvariable=self.x_max, command=self.màj_interface)
+        self.x_spinbox_maximum = tk.Spinbox(self.axe_x, from_=0, to=sys.maxsize, textvariable=self.x_max)
         self.x_label_pas = tk.Label(self.axe_x, text="Pas")
-        self.x_spinbox_pas = tk.Spinbox(self.axe_x, from_=1, to=sys.maxsize, textvariable=self.pas_x, command=self.màj_interface)
-        self.x_radiobutton_longueur_pas = tk.Radiobutton(self.axe_x, text="Longueur du pas (cm)", variable=self.type_longueur_x, value="pas", command=self.màj_interface)
-        self.x_spinbox_longueur_pas = tk.Spinbox(self.axe_x, to=sys.maxsize, format="%.1f", increment=0.1, textvariable=self.longueur_pas_x, command=self.màj_interface)
-        self.x_radiobutton_longueur_totale = tk.Radiobutton(self.axe_x, text="Longueur totale (cm)", variable=self.type_longueur_x, value="totale", command=self.màj_interface)
-        self.x_spinbox_longueur_totale = tk.Spinbox(self.axe_x, to=sys.maxsize, format="%.1f", increment=0.1, textvariable=self.longueur_totale_x, command=self.màj_interface)
-        self.x_checkbox_quadrillage = tk.Checkbutton(self.axe_x, text="Quadrillage", variable=self.quadrillage_x, command=self.màj_interface)
+        self.x_spinbox_pas = tk.Spinbox(self.axe_x, from_=1, to=sys.maxsize, textvariable=self.pas_x)
+        self.x_radiobutton_longueur_pas = tk.Radiobutton(self.axe_x, text="Longueur du pas (cm)", variable=self.type_longueur_x, value="pas", command=self.màj_longueur_radio)
+        self.x_spinbox_longueur_pas = tk.Spinbox(self.axe_x, to=sys.maxsize, format="%.1f", increment=0.1, textvariable=self.longueur_pas_x)
+        self.x_radiobutton_longueur_totale = tk.Radiobutton(self.axe_x, text="Longueur totale (cm)", variable=self.type_longueur_x, value="totale", command=self.màj_longueur_radio)
+        self.x_spinbox_longueur_totale = tk.Spinbox(self.axe_x, to=sys.maxsize, format="%.1f", increment=0.1, textvariable=self.longueur_totale_x)
+        self.x_checkbox_quadrillage = tk.Checkbutton(self.axe_x, text="Quadrillage", variable=self.quadrillage_x, command=self.màj_quadrillage)
         self.x_label_divisions = tk.Label(self.axe_x, text="Divisions du quadrillage")
-        self.x_spinbox_divisions = tk.Spinbox(self.axe_x, from_=1, to=sys.maxsize, textvariable=self.div_x, command=self.màj_interface)
+        self.x_spinbox_divisions = tk.Spinbox(self.axe_x, from_=1, to=sys.maxsize, textvariable=self.div_x)
+
+        self.x_spinbox_longueur_pas.bind('<Return>', self.màj_longueur_clavier)
+        self.x_spinbox_longueur_totale.bind('<Return>', self.màj_longueur_clavier)
 
         # Axe des ordonnées
         self.axe_y = tk.LabelFrame(self.zone_contrôle, text="Axe des ordonnées")
         self.y_label_titre = tk.Label(self.axe_y, text="Titre")
         self.y_entry_titre = tk.Entry(self.axe_y, textvariable=self.titre_y)
         self.y_label_minimum = tk.Label(self.axe_y, text="Minimum")
-        self.y_spinbox_minimum = tk.Spinbox(self.axe_y, from_=-sys.maxsize, to=0, textvariable=self.y_min, command=self.màj_interface)
+        self.y_spinbox_minimum = tk.Spinbox(self.axe_y, from_=-sys.maxsize, to=0, textvariable=self.y_min)
         self.y_label_maximum = tk.Label(self.axe_y, text="Maximum")
-        self.y_spinbox_maximum = tk.Spinbox(self.axe_y, from_=0, to=sys.maxsize, textvariable=self.y_max, command=self.màj_interface)
+        self.y_spinbox_maximum = tk.Spinbox(self.axe_y, from_=0, to=sys.maxsize, textvariable=self.y_max)
         self.y_label_pas = tk.Label(self.axe_y, text="Pas")
-        self.y_spinbox_pas = tk.Spinbox(self.axe_y, from_=1, to=sys.maxsize, textvariable=self.pas_y, command=self.màj_interface)
-        self.y_radiobutton_longueur_pas = tk.Radiobutton(self.axe_y, text="Longueur du pas (cm)", variable=self.type_longueur_y, value="pas", command=self.màj_interface)
-        self.y_spinbox_longueur_pas = tk.Spinbox(self.axe_y, to=sys.maxsize, format="%.1f", increment=0.1, textvariable=self.longueur_pas_y, command=self.màj_interface)
-        self.y_radiobutton_longueur_totale = tk.Radiobutton(self.axe_y, text="Longueur totale (cm)", variable=self.type_longueur_y, value="totale", command=self.màj_interface)
-        self.y_spinbox_longueur_totale = tk.Spinbox(self.axe_y, to=sys.maxsize, format="%.1f", increment=0.1, textvariable=self.longueur_totale_y, command=self.màj_interface)
-        self.y_checkbox_quadrillage = tk.Checkbutton(self.axe_y, text="Quadrillage", variable=self.quadrillage_y, command=self.màj_interface)
+        self.y_spinbox_pas = tk.Spinbox(self.axe_y, from_=1, to=sys.maxsize, textvariable=self.pas_y)
+        self.y_radiobutton_longueur_pas = tk.Radiobutton(self.axe_y, text="Longueur du pas (cm)", variable=self.type_longueur_y, value="pas", command=self.màj_longueur_radio)
+        self.y_spinbox_longueur_pas = tk.Spinbox(self.axe_y, to=sys.maxsize, format="%.1f", increment=0.1, textvariable=self.longueur_pas_y)
+        self.y_radiobutton_longueur_totale = tk.Radiobutton(self.axe_y, text="Longueur totale (cm)", variable=self.type_longueur_y, value="totale", command=self.màj_longueur_radio)
+        self.y_spinbox_longueur_totale = tk.Spinbox(self.axe_y, to=sys.maxsize, format="%.1f", increment=0.1, textvariable=self.longueur_totale_y)
+        self.y_checkbox_quadrillage = tk.Checkbutton(self.axe_y, text="Quadrillage", variable=self.quadrillage_y, command=self.màj_quadrillage)
         self.y_label_divisions = tk.Label(self.axe_y, text="Divisions du quadrillage")
-        self.y_spinbox_divisions = tk.Spinbox(self.axe_y, from_=1, to=sys.maxsize, textvariable=self.div_y, command=self.màj_interface)
+        self.y_spinbox_divisions = tk.Spinbox(self.axe_y, from_=1, to=sys.maxsize, textvariable=self.div_y)
 
+        self.y_spinbox_longueur_pas.bind('<Return>', self.màj_longueur_clavier)
+        self.y_spinbox_longueur_totale.bind('<Return>', self.màj_longueur_clavier)
 
         # Zone de prévisualisation
         # ------------------------
