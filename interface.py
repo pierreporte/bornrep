@@ -200,13 +200,17 @@ class Application(tk.Frame):
 
     def màj_quadrillage(self, event=None):
         if self.quadrillage_x.get():
+            self.x_label_divisions.configure(state=tk.NORMAL)
             self.x_spinbox_divisions.configure(state=tk.NORMAL)
         else:
+            self.x_label_divisions.configure(state=tk.DISABLED)
             self.x_spinbox_divisions.configure(state=tk.DISABLED)
 
         if self.quadrillage_y.get():
+            self.y_label_divisions.configure(state=tk.NORMAL)
             self.y_spinbox_divisions.configure(state=tk.NORMAL)
         else:
+            self.y_label_divisions.configure(state=tk.DISABLED)
             self.y_spinbox_divisions.configure(state=tk.DISABLED)
 
     def génerer(self):
@@ -304,11 +308,11 @@ class Application(tk.Frame):
 
         # Zone de prévisualisation
         # ------------------------
-        self.zone_prévisualisation = tk.Frame(self, relief=tk.SUNKEN, borderwidth=1)
+        self.zone_prévisualisation = tk.Frame(self)
         self.canvas_affichage = tk.Canvas(self.zone_prévisualisation, width=50, height=50)
         self.barre_défil_h = tk.Scrollbar(self.zone_prévisualisation, orient=tk.HORIZONTAL, command=self.canvas_affichage.xview)
         self.barre_défil_v = tk.Scrollbar(self.zone_prévisualisation, orient=tk.VERTICAL, command=self.canvas_affichage.yview)
-        self.canvas_affichage.config(xscrollcommand=self.barre_défil_h.set, yscrollcommand=self.barre_défil_v.set)
+        self.canvas_affichage.config(xscrollcommand=self.barre_défil_h.set, yscrollcommand=self.barre_défil_v.set, relief=tk.SUNKEN, borderwidth=1, bg="white")
 
         # Barre d’état
         # ------------
@@ -319,8 +323,8 @@ class Application(tk.Frame):
         # =========================
         self.grid(sticky=(tk.W, tk.E, tk.N, tk.S))
         self.barre_outils.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S))
-        self.zone_contrôle.grid(row=1, column=0, sticky=(tk.N, tk.S, tk.W, tk.E))
-        self.zone_prévisualisation.grid(row=1, column=1, sticky=(tk.N, tk.S, tk.W, tk. E))
+        self.zone_contrôle.grid(row=1, column=0, sticky=(tk.N, tk.S, tk.W, tk.E), padx=(1, 5), pady=1)
+        self.zone_prévisualisation.grid(row=1, column=1, sticky=(tk.N, tk.S, tk.W, tk. E), padx=(0, 1), pady=1)
         self.barre_état.grid(row=2, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S))
 
 
@@ -332,7 +336,7 @@ class Application(tk.Frame):
         
         # Zone de contrôle
         # ----------------
-        self.axe_x.grid(row=0, column=0, sticky=tk.N)
+        self.axe_x.grid(row=0, column=0, sticky=tk.N, pady=(0, 10))
         self.axe_y.grid(row=1, column=0, sticky=tk.N)
 
         # Axe des abscisses
