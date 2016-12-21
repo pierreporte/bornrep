@@ -110,7 +110,7 @@ class Application(tk.Frame):
             self.y_spinbox_longueur_totale.configure(state=tk.NORMAL)
 
     def nouveau_graphique(self, event=None):
-        if messagebox.askyesno("Attention", "Si vous créez un nouveau graphique, le travail en cours sera effacé définitivement.\n\nVoulez-vous continuer ?", icon=messagebox.WARNING):
+        if messagebox.askyesno("Attention", "Voulez-vous vraiment continuer ?", detail="Si vous créez un nouveau graphique, le travail en cours sera effacé définitivement.", icon=messagebox.WARNING):
             self.initialisation()
             self.génerer()
     
