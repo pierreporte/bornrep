@@ -29,6 +29,7 @@ from tkinter import filedialog
 from tkinter import simpledialog
 from PIL import Image, ImageTk
 
+from dialogues import Àpropos
 from graphique import Graphique
 
 class Application(tk.Frame):
@@ -259,6 +260,7 @@ class Application(tk.Frame):
         self.bouton_nouveau = tk.Button(self.barre_outils, text="Nouveau", command=self.nouveau_graphique, relief=tk.FLAT)
         self.bouton_génerer = tk.Button(self.barre_outils, text="Générer", command=self.génerer, relief=tk.FLAT)
         self.bouton_exporter = tk.Button(self.barre_outils, text="Exporter", command=self.exporter_graphique, relief=tk.FLAT)
+        self.bouton_àpropos = tk.Button(self.barre_outils, text="?", command=lambda: Àpropos(self), relief=tk.FLAT)
 
         # Zone de contrôle
         # ----------------
@@ -333,6 +335,7 @@ class Application(tk.Frame):
         self.bouton_nouveau.grid(row=0, column=0)
         self.bouton_génerer.grid(row=0, column=1)
         self.bouton_exporter.grid(row=0, column=2)
+        self.bouton_àpropos.grid(row=0, column=3)
         
         # Zone de contrôle
         # ----------------
