@@ -20,7 +20,7 @@ import sys
 base = 'Win32GUI' if sys.platform=='win32' else None
 
 executables = [
-    Executable('bornographe.py', base=base)
+    Executable('bornrep.py', base=base)
 ]
 
 setup(name='Bornographe',
