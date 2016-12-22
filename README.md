@@ -1,9 +1,7 @@
-Bornographe
-===========
+Bornrep
+=======
 
-*Bornographe* est un petit logiciel destiné à génerer des repères de graphiques vierges. Il est nommé en l’honneur de [Cyrille BORNE](https://cyrille-borne.com), puisque c’est pour lui qu’il a été écrit.
-
-La version actuelle est considérée comme un prototype.
+*Bornrep* est un petit logiciel destiné à génerer des repères de graphiques vierges. Il est nommé en l’honneur de [Cyrille BORNE](https://cyrille-borne.com), puisque c’est pour lui qu’il a été écrit.
 
 ![Capture d’écran](capture.png)
 
@@ -27,7 +25,7 @@ doit être exécutée dans le répertoire racine des fichiers sources.
 Installation
 ------------
 
-Après avoir compilé le logiciel ou récupéré sa version compilée, lancer simplement l’exécutable *bornographe*.
+Après avoir compilé le logiciel ou récupéré sa version compilée, lancer simplement l’exécutable *bornrep*.
 
 Utilisation
 -----------

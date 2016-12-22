@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# BORNOGRAPHE (prototype)
+# BORNREP 1.0
 # Générateur de fond de graphique pour Cyrille BORNE (https://cyrille-borne.com)
 #
 # Copyright (C) 2016 thomas Duchesne (thomas@duchesne.io)

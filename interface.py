@@ -1,4 +1,4 @@
-# BORNOGRAPHE (prototype)
+# BORNREP 1.0
 # Générateur de fond de graphique pour Cyrille BORNE (https://cyrille-borne.com)
 #
 # Copyright (C) 2016 thomas Duchesne (thomas@duchesne.io)
@@ -56,7 +56,7 @@ class Application(tk.Frame):
         self.longueur_totale_y = tk.DoubleVar()
         self.quadrillage_y = tk.BooleanVar()
 
-        self.fichier_prévisualisation = tempfile.NamedTemporaryFile(mode="w+b", prefix="bornographe_", suffix=".png")
+        self.fichier_prévisualisation = tempfile.NamedTemporaryFile(mode="w+b", prefix="bornrep", suffix=".png")
         # Il faut que le fichier temporaire soit une image avant de l’utiliser.
         Image.new("RGBA", (1, 1)).save(self.fichier_prévisualisation.name)
 
@@ -66,7 +66,7 @@ class Application(tk.Frame):
         self.bind_all("<F5>", self.génerer)
         self.bind_all("<Control-e>", self.exporter_graphique)
 
-        self.master.title("Bornographe")
+        self.master.title("Bornrep")
         self.créer_interface()
         self.initialisation()
         self.génerer()

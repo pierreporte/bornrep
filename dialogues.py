@@ -1,4 +1,4 @@
-# BORNOGRAPHE (prototype)
+# BORNREP 1.0
 # Générateur de fond de graphique pour Cyrille BORNE (https://cyrille-borne.com)
 #
 # Copyright (C) 2016 thomas Duchesne (thomas@duchesne.io)
@@ -27,11 +27,11 @@ from tkinter import simpledialog
 
 class Àpropos(simpledialog.Dialog):
     def __init__(self, master):
-        super().__init__(master, title="À propos du Bornographe")
+        super().__init__(master, title="À propos de Bornrep")
 
     def body(self, master):
-        tk.Label(master, text="Bornographe", font="Times 20 bold italic", relief=tk.RIDGE, borderwidth=2).grid(row=0, sticky="NWE", ipady=10, ipadx=10)
-        tk.Label(master, text="Version 1.0-alpha").grid(row=1, sticky="NWES", pady=10)
+        tk.Label(master, text="Bornrep", font="Times 20 bold italic", relief=tk.RIDGE, borderwidth=2).grid(row=0, sticky="NWE", ipady=10, ipadx=10)
+        tk.Label(master, text="Version 1.0").grid(row=1, sticky="NWES", pady=10)
         tk.Label(master, text="Générateur de repère pour graphiques").grid(row=2, pady=(0, 10))
         tk.Label(master, text="Écrit par Thomas Duchesne").grid(row=3)
         tk.Label(master, text="Inspiré par Cyrille BORNE").grid(row=4)
